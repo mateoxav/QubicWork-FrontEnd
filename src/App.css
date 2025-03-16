@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
+
+html {
+  background-color: rgb(16, 24, 32);
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.date-input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.date-input-wrapper input[type="date"] {
+  width: 100%;
+  padding-right: 5px;
+  padding-left: 5px;
+  box-sizing: border-box;
+}
+
+.date-input-wrapper .calendar-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
