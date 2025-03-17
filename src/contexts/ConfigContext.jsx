@@ -3,7 +3,6 @@ const DEFAULT_HTTP_ENDPOINT = 'https://rpc.qubic.org'
 const ConfigContext = createContext()
 export const TICK_OFFSET = 5
 
-// [TODO] This file brought from Quottery, which needs backend server. We don't need it here. Remove it.
 export const ConfigProvider = ({ children }) => {
     const [httpEndpoint, setHttpEndpoint] = useState(DEFAULT_HTTP_ENDPOINT)
     const [connectedToCustomServer, setConnectedToCustomServer] = useState(false)
@@ -11,8 +10,7 @@ export const ConfigProvider = ({ children }) => {
     useEffect(() => {
         // On mount, see if custom endpoints are saved
         const savedHttp = localStorage.getItem('httpEndpoint')
-        const savedBackend = localStorage.getItem('backendUrl')
-        if (savedHttp && savedBackend) {
+        if (savedHttp) {
             setHttpEndpoint(savedHttp)
             setConnectedToCustomServer(true)
         }
@@ -22,15 +20,13 @@ export const ConfigProvider = ({ children }) => {
         setHttpEndpoint(DEFAULT_HTTP_ENDPOINT)
         setConnectedToCustomServer(false)
         localStorage.removeItem('httpEndpoint')
-        localStorage.removeItem('backendUrl')
     }
 
-    const updateEndpoints = (newHttpEndpoint, newBackendUrl) => {
+    const updateEndpoints = (newHttpEndpoint) => {
         setHttpEndpoint(newHttpEndpoint)
         setConnectedToCustomServer(true)
 
         localStorage.setItem('httpEndpoint', newHttpEndpoint)
-        localStorage.setItem('backendUrl', newBackendUrl)
     }
 
     return (
