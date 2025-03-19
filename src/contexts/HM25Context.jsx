@@ -108,6 +108,7 @@ export const HM25Provider = ({ children }) => {
             const unsignedTx = await buildEchoTx(qHelper, qHelper.getIdentityBytes(walletPublicIdentity), tick, amount)
             const finalTx = await signTransaction(unsignedTx)
             const broadcastRes = await broadcastTx(finalTx)
+            console.log('Register Vault TX result:', broadcastRes)
             return { targetTick: tick + TICK_OFFSET, txResult: broadcastRes }
         } catch (err) {
             console.error(err)
@@ -126,6 +127,7 @@ export const HM25Provider = ({ children }) => {
             const unsignedTx = await buildBurnTx(qHelper, qHelper.getIdentityBytes(walletPublicIdentity), tick, amount)
             const finalTx = await signTransaction(unsignedTx)
             const broadcastRes = await broadcastTx(finalTx)
+            console.log('Register Vault TX result:', broadcastRes)
             return { targetTick: tick + TICK_OFFSET, txResult: broadcastRes }
         } catch (err) {
             console.error(err)
