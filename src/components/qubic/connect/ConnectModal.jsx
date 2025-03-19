@@ -287,7 +287,7 @@ const ConnectModal = ({ open, onClose }) => {
                                             onClick={() => setSelectedMode("metamask")}
                                         >
                                             <img src={metamaskIcon} alt="Metamask Icon" className="h-6 w-6" />
-                                            Connect with MetaMask (Coming soon)
+                                            Connect with MetaMask
                                         </button>
                                         <button
                                             className="bg-primary-40 text-black p-3 rounded-lg w-full flex items-center gap-2"
