@@ -7,7 +7,7 @@ import { useQubicConnect } from './QubicConnectContext'
 const HM25Context = createContext()
 
 const initialState = {
-    stats: { numberOfEchoCalls: 0, numberOfBurnCalls: 0 },
+    stats: { numberOfEchoCalls: 0n, numberOfBurnCalls: 0n },
     loading: false,
     error: null,
 }
@@ -47,7 +47,9 @@ export const HM25Provider = ({ children }) => {
                 dispatch({ type: 'SET_LOADING', payload: false })
             }
         }
-        fetchStats()
+        fetchStats() // Fetch immediately on mount or httpEndpoint change
+        const intervalId = setInterval(fetchStats, 5000) // Fetch every 5 seconds
+        return () => clearInterval(intervalId) // Cleanup interval on unmount or httpEndpoint change
     }, [httpEndpoint])
 
     useEffect(() => {
@@ -108,7 +110,7 @@ export const HM25Provider = ({ children }) => {
             const unsignedTx = await buildEchoTx(qHelper, qHelper.getIdentityBytes(walletPublicIdentity), tick, amount)
             const finalTx = await signTransaction(unsignedTx)
             const broadcastRes = await broadcastTx(finalTx)
-            console.log('Register Vault TX result:', broadcastRes)
+            console.log('Echo TX result:', broadcastRes)
             return { targetTick: tick + TICK_OFFSET, txResult: broadcastRes }
         } catch (err) {
             console.error(err)
@@ -127,7 +129,7 @@ export const HM25Provider = ({ children }) => {
             const unsignedTx = await buildBurnTx(qHelper, qHelper.getIdentityBytes(walletPublicIdentity), tick, amount)
             const finalTx = await signTransaction(unsignedTx)
             const broadcastRes = await broadcastTx(finalTx)
-            console.log('Register Vault TX result:', broadcastRes)
+            console.log('Burn TX result:', broadcastRes)
             return { targetTick: tick + TICK_OFFSET, txResult: broadcastRes }
         } catch (err) {
             console.error(err)

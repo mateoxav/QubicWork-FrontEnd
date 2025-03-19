@@ -1,6 +1,6 @@
 import { Buffer } from 'buffer'
 import base64 from 'base-64'
-import {TICK_OFFSET} from "../../contexts/ConfigContext"
+import { TICK_OFFSET } from "../../contexts/ConfigContext"
 
 export const HEADERS = {
     'accept': 'application/json',
@@ -25,6 +25,7 @@ export const FUNC_GET_STATS = 1
 export async function fetchHM25Stats(httpEndpoint) {
     const queryData = makeJsonData(HM25_CONTRACT_INDEX, FUNC_GET_STATS, 0, '')
     try {
+        console.log('Run fetch stats')
         const response = await fetch(`${httpEndpoint}/v1/querySmartContract`, {
             method: 'POST',
             headers: HEADERS,
@@ -43,20 +44,20 @@ export async function fetchHM25Stats(httpEndpoint) {
         if (buf.length < 16) { // Ensure buffer has at least 16 bytes (2 * 8 bytes)
             console.warn('Buffer too short for stats, returning defaults:', buf.length)
             return {
-                numberOfEchoCalls: 0,
-                numberOfBurnCalls: 0,
+                numberOfEchoCalls: 0n,
+                numberOfBurnCalls: 0n,
             }
         }
 
         return {
-            numberOfEchoCalls: Number(buf.readBigUInt64LE(0)),
-            numberOfBurnCalls: Number(buf.readBigUInt64LE(8)),
+            numberOfEchoCalls: buf.readBigUInt64LE(0),
+            numberOfBurnCalls: buf.readBigUInt64LE(8),
         }
     } catch (error) {
         console.error('Error fetching HM25 stats:', error)
         return {
-            numberOfEchoCalls: 0,
-            numberOfBurnCalls: 0,
+            numberOfEchoCalls: 0n,
+            numberOfBurnCalls: 0n,
         }
     }
 }

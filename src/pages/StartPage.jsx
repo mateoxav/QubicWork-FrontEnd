@@ -6,7 +6,7 @@ import { useHM25 } from '../contexts/HM25Context'
 function StartPage() {
     const navigate = useNavigate()
     const { connected, toggleConnectModal } = useQubicConnect()
-    const { balance } = useHM25()
+    const { state, balance } = useHM25()
 
     if (!connected) {
         return (
@@ -47,6 +47,10 @@ function StartPage() {
                 >
                     Burn Coin
                 </button>
+            </div>
+            <div className="mt-8 p-4 bg-gray-800 rounded-lg border border-gray-700 text-white">
+                <p><strong>Number of Echos:</strong> {state.stats.numberOfEchoCalls.toString()}</p>
+                <p><strong>Number of Burns:</strong> {state.stats.numberOfBurnCalls.toString()}</p>
             </div>
         </div>
     )
