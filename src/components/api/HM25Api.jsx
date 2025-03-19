@@ -72,7 +72,7 @@ export async function buildEchoTx(qHelper, sourcePublicKey, tick, amount) {
     tx.set(sourcePublicKey, offset)
     offset += qHelper.PUBLIC_KEY_LENGTH
     tx[offset] = HM25_CONTRACT_INDEX
-    offset += qHelper.PUBLIC_KEY_LENGTH - 1 // Contract index + 31 zeros
+    offset += qHelper.PUBLIC_KEY_LENGTH
     dv.setBigInt64(offset, BigInt(amount), true)
     offset += 8
     dv.setUint32(offset, finalTick, true)
@@ -95,7 +95,7 @@ export async function buildBurnTx(qHelper, sourcePublicKey, tick, amount) {
     tx.set(sourcePublicKey, offset)
     offset += qHelper.PUBLIC_KEY_LENGTH
     tx[offset] = HM25_CONTRACT_INDEX
-    offset += qHelper.PUBLIC_KEY_LENGTH - 1 // Contract index + 31 zeros
+    offset += qHelper.PUBLIC_KEY_LENGTH
     dv.setBigInt64(offset, BigInt(amount), true)
     offset += 8
     dv.setUint32(offset, finalTick, true)
