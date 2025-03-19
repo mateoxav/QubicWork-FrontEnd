@@ -7,7 +7,7 @@ export const MetamaskActions = {
     SetError: "SetError"
 }
 
-export const defaultSnapOrigin = "local:http://localhost:8080"
+export const defaultSnapOrigin = "npm:@qubic-lib/qubic-mm-snap"
 
 const initialState = {
     snapsDetected: false,
