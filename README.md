@@ -1,8 +1,7 @@
-# Getting Started with Create React App
+# Getting Started with Qubic Hackathon Madrid 2025 Demo App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Get started
+## Getting started
 
 In the project directory, you can run:
 
