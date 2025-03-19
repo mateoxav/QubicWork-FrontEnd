@@ -2,11 +2,15 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Get started
 
 In the project directory, you can run:
 
-### `npm start`
+### `pnpm install`
+
+Install the web app's dependencies
+
+### `pnpm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
@@ -14,57 +18,83 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
+### `pnpm run build`
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Prepare Your Web App for Production
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `ssh user@your_server_ip`
+Log in to your server via SSH.
+Replace user with your SSH `username` and `your_server_ip` with your server’s IP address.
 
-### `npm run eject`
+### Install Nginx
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+sudo apt update
+sudo apt install nginx
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Start and enable Nginx
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+sudo systemctl start nginx
+sudo systemctl enable nginx
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Transfer Your Files to the Server
 
-## Learn More
+In your server, create the directory that your web app will be stored to
+```bash
+sudo mkdir -p /var/www/myapp
+sudo chown -R www-data:www-data /var/www/myapp
+sudo chmod -R 755 /var/www/myapp
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+In your local machine, use either `scp` or `rsync` to securely transfer your app’s files to the server.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+scp -r build/* user@your_server_ip:/var/www/myapp
+```
 
-### Code Splitting
+### Configure nginx
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+sudo vim /etc/nginx/sites-available/myapp
+```
 
-### Analyzing the Bundle Size
+Copy the below configurations, adjust as needed:
+```bash
+server {
+    listen 80;
+    server_name your_domain.com;
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+    root /var/www/myapp;
+    index index.html;
 
-### Making a Progressive Web App
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Enable the configurations
 
-### Advanced Configuration
+```bash
+sudo ln -s /etc/nginx/sites-available/myapp /etc/nginx/sites-enabled/
+```
+### Test and reload nginx
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```bash
+sudo nginx -t
+sudo systemctl reload nginx
+```
 
-### Deployment
+### Troubleshooting
+Check Nginx error logs if something goes wrong
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```bash
+sudo cat /var/log/nginx/error.log
+```
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
