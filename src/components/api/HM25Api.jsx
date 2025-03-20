@@ -25,7 +25,6 @@ export const FUNC_GET_STATS = 1
 export async function fetchHM25Stats(httpEndpoint) {
     const queryData = makeJsonData(HM25_CONTRACT_INDEX, FUNC_GET_STATS, 0, '')
     try {
-        console.log('Run fetch stats')
         const response = await fetch(`${httpEndpoint}/v1/querySmartContract`, {
             method: 'POST',
             headers: HEADERS,
