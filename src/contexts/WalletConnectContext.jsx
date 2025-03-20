@@ -11,6 +11,7 @@ export function WalletConnectProvider({children}) {
     const [isConnected, setIsConnected] = useState(false)
 
     const WC_PROJECT_ID = "2d3b11ae82b87043a64c8abd87f865c8"
+    const QUBIC_CHAIN_ID = "qubic:mainnet"
 
     // Initialize the client
     useEffect(() => {
@@ -72,7 +73,7 @@ export function WalletConnectProvider({children}) {
             const {uri, approval} = await signClient.connect({
                 requiredNamespaces: {
                     qubic: {
-                        chains: ["qubic:main"],
+                        chains: [QUBIC_CHAIN_ID],
                         methods: [
                             "qubic_requestAccounts",
                             "qubic_sendQubic",
@@ -127,7 +128,7 @@ export function WalletConnectProvider({children}) {
         try {
             return await signClient.request({
                 topic: sessionTopic,
-                chainId: "qubic:main",
+                chainId: QUBIC_CHAIN_ID,
                 request: {
                     method: "qubic_requestAccounts",
                     params: {nonce: Date.now().toString()},
@@ -150,7 +151,7 @@ export function WalletConnectProvider({children}) {
         try {
             return await signClient.request({
                 topic: sessionTopic,
-                chainId: "qubic:main",
+                chainId: QUBIC_CHAIN_ID,
                 request: {
                     method: "qubic_signTransaction",
                     params: {
