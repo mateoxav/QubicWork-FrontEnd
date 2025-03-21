@@ -66,8 +66,8 @@ sudo vim /etc/nginx/sites-available/myapp
 Copy the below configurations, adjust as needed:
 ```bash
 server {
-    listen 80;
-    server_name your_domain.com;
+    listen 8081;
+    server_name <your_server_ip>;
 
     root /var/www/myapp;
     index index.html;
@@ -89,6 +89,18 @@ sudo ln -s /etc/nginx/sites-available/myapp /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl reload nginx
 ```
+
+Open the app through http://<your_server_ip>:8081
+
+### Conenct to core node server
+
+If you have already launched the node with <node_ip>, try to connect it with our frontend. 
+Open the ConnectLink at the top right of the app, select Connect to Server, add your node url:
+
+```bash
+http://<node_ip>
+```
+Then refresh the page
 
 ### Troubleshooting
 Check Nginx error logs if something goes wrong
