@@ -131,6 +131,7 @@ const ConnectModal = ({ open, onClose }) => {
 
     const handleCopyClick = () => {
         if (walletPublicIdentity) {
+            console.log('Current wallet publicl identity: ',walletPublicIdentity)
             navigator.clipboard.writeText(walletPublicIdentity)
             setCopied(true)
             setTimeout(() => setCopied(false), 5000)
