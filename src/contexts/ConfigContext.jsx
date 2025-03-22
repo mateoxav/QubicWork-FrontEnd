@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
-const DEFAULT_HTTP_ENDPOINT = 'http://91.210.226.146'
+const DEFAULT_HTTP_ENDPOINT = process.env.REACT_APP_HTTP_ENDPOINT || 'http://91.210.226.146'
 const ConfigContext = createContext()
 export const TICK_OFFSET = 5
 
