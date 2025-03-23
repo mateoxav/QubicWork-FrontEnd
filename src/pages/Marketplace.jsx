@@ -4,6 +4,8 @@ import SearchInput from "../components/SearchInput";
 import { useMarketplace } from "../contexts/MarketplaceContext";
 import { useQubicConnect } from "../contexts/QubicConnectContext";
 import { toast } from "react-toastify"; // Asumiendo que tienes react-toastify instalado
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const services = [
   {
@@ -463,6 +465,7 @@ export default function Marketplace() {
           <p className="text-gray-600">Intenta ajustar los filtros de búsqueda</p>
         </div>
       )}
+      <ToastContainer position="bottom-right" />
     </div>
   );
 }
