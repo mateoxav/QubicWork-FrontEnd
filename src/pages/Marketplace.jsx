@@ -194,6 +194,13 @@ export default function Marketplace() {
   });
 
   const [sortBy, setSortBy] = useState("trending");
+  // Nuevo estado para controlar los botones en proceso
+  const [processingServices, setProcessingServices] = useState([]);
+
+  // Función para manejar el clic en "Contratar"
+  const handleHire = (serviceId) => {
+    setProcessingServices([...processingServices, serviceId]);
+  };
 
   const filteredServices = services
     .filter(service => 
@@ -356,8 +363,12 @@ export default function Marketplace() {
                     {service.deliveryDays} días
                   </p>
                 </div>
-                <ButtonTwo className="text-sm px-4 py-2 whitespace-nowrap">
-                  Ver detalles
+                <ButtonTwo 
+                  className={`text-sm px-4 py-2 whitespace-nowrap ${processingServices.includes(service.id) ? 'bg-indigo-800 opacity-75 cursor-not-allowed' : ''}`}
+                  onClick={() => handleHire(service.id)}
+                  disabled={processingServices.includes(service.id)}
+                >
+                  {processingServices.includes(service.id) ? "Procesando..." : "Contratar"}
                 </ButtonTwo>
               </div>
               
