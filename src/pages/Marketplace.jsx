@@ -233,16 +233,20 @@ export default function Marketplace() {
       // Obtener datos del servicio
       const description = selectedService.title;
       const amount = selectedService.priceInUsdc;
-      // Calcular el deadline basado en días de entrega (convertir a timestamp)
       const deadlineInDays = selectedService.deliveryDays;
       
       console.log(`Iniciando contrato para: ${description}`);
       console.log(`Monto: ${amount} USDC`);
       console.log(`Plazo de entrega: ${deadlineInDays} días`);
       
+      // Solo continuar si createAgreement existe
+      if (!createAgreement) {
+        throw new Error("La función createAgreement no está disponible");
+      }
+      
       // Crear el acuerdo en el contrato inteligente
       const result = await createAgreement(
-        wallet.publicKey, // Buyer: cartera del usuario actual
+        wallet.publicKey || "BUYER_IDENTITY_PLACEHOLDER", // Buyer: cartera del usuario actual o fallback
         SELLER_IDENTITY, // Seller: identidad fija proporcionada
         amount,          // Amount: precio en USDC
         description,     // Description: título del servicio
@@ -250,7 +254,7 @@ export default function Marketplace() {
       );
       
       // Si se procesa correctamente
-      if (result) {
+      if (result && result.success !== false) {
         console.log("Contrato creado con éxito:", result);
         
         // Guardar información del acuerdo
@@ -263,13 +267,15 @@ export default function Marketplace() {
         }));
         
         toast.success("¡Servicio contratado con éxito!");
+      } else {
+        throw new Error("No se pudo crear el contrato");
       }
       
     } catch (err) {
       console.error("Error al contratar servicio:", err);
       toast.error(err.message || "Error al contratar el servicio");
-      
-      // Quitar el servicio de "procesando" en caso de error
+    } finally {
+      // Quitar el servicio de "procesando" independientemente del resultado
       setProcessingServices(prev => prev.filter(id => id !== serviceId));
     }
   };
