@@ -21,7 +21,7 @@ function Header() {
             <Link to="/profile" className="hover:text-indigo-600 transition-colors">Perfil</Link>
           </div>
           
-          <div className="flex gap-3 ml-6">
+          <div className="flex gap-3 ml-2">
             {user ? (
               <div className="flex items-center gap-4">
                 <span className="text-sm text-gray-600">Hola, {user.username}</span>
@@ -35,12 +35,12 @@ function Header() {
             ) : (
               <>
                 <Link to="/login">
-                  <ButtonTwo className="px-4 py-2 text-sm">
+                  <ButtonTwo className="px-2 py-2 text-sm">
                     Iniciar Sesión
                   </ButtonTwo>
                 </Link>
                 <Link to="/register">
-                  <ButtonTwo className="px-4 py-2 text-sm">
+                  <ButtonTwo className="px-2 py-2 text-sm">
                     Registrarse
                   </ButtonTwo>
                 </Link>
