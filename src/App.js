@@ -23,6 +23,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegistrationForm />} />
+            <Route path="/profile/:userId" element={<Profile />} />
           </Routes>
         </main>
         <Footer />
