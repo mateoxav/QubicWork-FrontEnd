@@ -1,52 +1,35 @@
-import React from 'react'
-import {BrowserRouter, Route, Routes} from 'react-router-dom'
-import {QubicConnectCombinedProvider} from './contexts/QubicConnectContext'
-import {HM25Provider} from './contexts/HM25Context'
-import Header from './components/layout/Header'
-import Footer from './components/layout/Footer'
-import StartPage from './pages/StartPage'
-import EchoPage from './pages/EchoPage'
-import BurnPage from './pages/BurnPage'
-import {Toaster} from 'react-hot-toast'
-import {ConfigProvider} from "./contexts/ConfigContext"
-
-export function Layout({children}) {
-    return (
-        <div className="flex flex-col min-h-screen">
-            <Header/>
-            <main className="flex-1 flex flex-col">{children}</main>
-            <Footer className="mt-auto"/>
-        </div>
-    )
-}
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import Marketplace from './pages/Marketplace';
+import LoginForm from './components/LoginForm';
+import RegistrationForm from './components/RegistrationForm';
+import PostTask from './pages/PostTask';
+import Profile from './pages/Profile';
+import { AuthProvider } from './contexts/AuthContext';
 
 function App() {
-    return (
-        <ConfigProvider>
-            <QubicConnectCombinedProvider>
-                <HM25Provider>
-                    <BrowserRouter>
-                        <Layout>
-                            <Routes>
-                                <Route path="/" element={<StartPage/>}/>
-                                <Route path="/echo" element={<EchoPage/>}/>
-                                <Route path="/burn" element={<BurnPage/>}/>
-                            </Routes>
-                            <Toaster
-                                position="top-right"
-                                toastOptions={{
-                                    style: {
-                                        background: "#202E3C",
-                                        color: "#fff",
-                                    },
-                                }}
-                            />
-                        </Layout>
-                    </BrowserRouter>
-                </HM25Provider>
-            </QubicConnectCombinedProvider>
-        </ConfigProvider>
-    )
+  return (
+  <AuthProvider>  
+    <Router>
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/marketplace" element={<Marketplace />} />
+            <Route path="/post-task" element={<PostTask />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/register" element={<RegistrationForm />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
+  </AuthProvider>   
+  );
 }
 
-export default App
+export default App;
