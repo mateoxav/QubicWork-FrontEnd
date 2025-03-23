@@ -303,7 +303,7 @@ export default function Marketplace() {
             className="bg-white rounded-xl shadow-md p-4 flex flex-col justify-between hover:shadow-lg transition-all border border-gray-100"
           >
             {/* Badges de Estado */}
-            <div className="relative mb-4">
+            <div className="relative mb-8">
               {service.trending && (
                 <span className="absolute top-0 right-0 badge badge-accent badge-sm">
                   🔥 Trending
