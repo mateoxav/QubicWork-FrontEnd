@@ -11,7 +11,7 @@ function Header() {
         <Link to="/" className="text-2xl font-bold text-indigo-600">
           QubicWork
         </Link>
-        
+        <ConnectLink />
         <nav className="flex items-center gap-6">
           <div className="hidden md:flex gap-6 text-gray-800 font-medium">
             <Link to="/marketplace" className="hover:text-indigo-600 transition-colors">Marketplace</Link>
