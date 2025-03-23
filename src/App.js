@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Marketplace from './pages/Marketplace';
 import PostTask from './pages/PostTask';
 import Profile from './pages/Profile';
+//import EchoPage from './pages/EchoPage';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/post-task" element={<PostTask />} />
             <Route path="/profile" element={<Profile />} />
+            
           </Routes>
         </main>
         <Footer />

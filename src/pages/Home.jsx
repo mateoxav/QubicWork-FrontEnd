@@ -1,22 +1,17 @@
 import React from "react";
 import SearchInput from "../components/SearchInput";
 import SearchButton from "../components/SearchButton";
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Input,
-  Tabs,
-  Tab,
-} from "@heroui/react";
-import { Briefcase, Search } from "lucide-react";
+import ButtonOne from "../components/ButtonOne";
+import ButtonTwo from "../components/ButtonTwo";
+import ServiceCard from "../components/ServiceCard";
 
 export default function Home() {
+  const [tab, setTab] = React.useState("basico");
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
       <main className="px-6 py-10 max-w-7xl mx-auto">
+        {/* Hero */}
         <section className="text-center mb-12">
           <h2 className="text-4xl font-extrabold mb-4">
             Encuentra talento profesional en la red descentralizada
@@ -25,71 +20,60 @@ export default function Home() {
             Un marketplace sin intermediarios construido sobre la blockchain Qubic. Transparente, seguro y sin comisiones abusivas.
           </p>
           <div className="mt-6 flex justify-center items-center gap-2">
-            <Input placeholder="Buscar servicios..." className="max-w-md" />
-            
-            <Button color="success" variant="solid" startContent={<Search className="w-4 h-4" />}>
-            </Button>
+            <SearchInput placeholder="Buscar servicios..." />
+            <SearchButton />
           </div>
         </section>
 
+        {/* Servicios populares */}
         <section id="explorar">
           <h3 className="text-2xl font-bold mb-6">Servicios populares</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <Card key={i} className="hover:shadow-md transition-shadow">
-                <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <Briefcase className="w-5 h-5 text-indigo-500" />
-                    <span className="text-sm text-gray-500">Diseño Gráfico</span>
-                  </div>
-                </CardHeader>
-                <CardBody>
-                  <h4 className="text-lg font-semibold mb-2">
-                    Logo para marca Web3
-                  </h4>
-                  <p className="text-sm text-gray-600 mb-3">
-                    Diseño profesional de logotipo minimalista para proyectos cripto y blockchain.
-                  </p>
-                </CardBody>
-                <CardFooter className="flex justify-between items-center">
-                  <span className="text-indigo-600 font-bold">350 QU</span>
-                  <Button size="sm">Ver más</Button>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
+          <ServiceCard />
         </section>
 
-        <section id="publicar" className="mt-16">
-          <h3 className="text-2xl font-bold mb-6">Publica tu propio servicio</h3>
-          <Tabs aria-label="Publicar servicio" variant="underlined">
-            <Tab key="basico" title="Básico">
-              <Card className="max-w-2xl mx-auto">
-                <CardBody className="space-y-4">
-                  <Input placeholder="Título del servicio" />
-                  <Input placeholder="Descripción" />
-                  <Input placeholder="Precio en QU" />
-                  <Button color="primary" className="w-full">
-                    Publicar Servicio
-                  </Button>
-                </CardBody>
-              </Card>
-            </Tab>
-            <Tab key="avanzado" title="Avanzado">
-              <Card className="max-w-2xl mx-auto">
-                <CardBody className="space-y-4">
-                  <Input placeholder="Título" />
-                  <Input placeholder="Descripción detallada" />
-                  <Input placeholder="Palabras clave" />
-                  <Input placeholder="Precio" />
-                  <Input placeholder="Tiempo de entrega" />
-                  <Button color="primary" className="w-full">
-                    Publicar Avanzado
-                  </Button>
-                </CardBody>
-              </Card>
-            </Tab>
-          </Tabs>
+        {/* Publicar servicio */}
+        <section id="publicar" className="mt-16 max-w-2xl mx-auto">
+          <h3 className="text-2xl font-bold mb-6 text-center">Publica tu propio servicio</h3>
+
+          <div className="mb-4 flex justify-center gap-2">
+            <ButtonTwo className="text-sm px-4 py-1" onClick={() => setTab("basico")}>Básico</ButtonTwo>
+            <ButtonTwo className="text-sm px-4 py-1" onClick={() => setTab("avanzado")}>Avanzado</ButtonTwo>
+          </div>
+
+          <div className="bg-white rounded-lg shadow p-6 space-y-4">
+            <input
+              type="text"
+              placeholder="Título"
+              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <input
+              type="text"
+              placeholder={tab === "basico" ? "Descripción" : "Descripción detallada"}
+              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            {tab === "avanzado" && (
+              <>
+                <input
+                  type="text"
+                  placeholder="Palabras clave"
+                  className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <input
+                  type="text"
+                  placeholder="Tiempo de entrega"
+                  className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </>
+            )}
+            <input
+              type="text"
+              placeholder="Precio en QU"
+              className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            <ButtonTwo className="w-full text-sm py-2">
+              {tab === "basico" ? "Publicar Servicio" : "Publicar Avanzado"}
+            </ButtonTwo>
+          </div>
         </section>
       </main>
     </div>
