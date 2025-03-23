@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ButtonTwo from "../components/ButtonTwo";
 import SearchInput from "../components/SearchInput";
+import { useMarketplace } from "../contexts/MarketplaceContext";
+import { useQubicConnect } from "../contexts/QubicConnectContext";
+import { toast } from "react-toastify"; // Asumiendo que tienes react-toastify instalado
+
 const services = [
   {
     id: "web3-landing",
@@ -194,12 +198,78 @@ export default function Marketplace() {
   });
 
   const [sortBy, setSortBy] = useState("trending");
-  // Nuevo estado para controlar los botones en proceso
   const [processingServices, setProcessingServices] = useState([]);
+  const [successfulAgreements, setSuccessfulAgreements] = useState({});
+  
+  // Obtener funciones del contexto de Marketplace
+  const { createAgreement, state: marketplaceState } = useMarketplace();
+  // Obtener datos del usuario conectado
+  const { wallet, connected } = useQubicConnect();
+
+  // Identidad fija del vendedor para todos los servicios
+  const SELLER_IDENTITY = "WEVWZOHASCHODGRVRFKZCGUDGHEDWCAZIZXWBUHZEAMNVHKZPOIZKUEHNQSJ";
 
   // Función para manejar el clic en "Contratar"
-  const handleHire = (serviceId) => {
-    setProcessingServices([...processingServices, serviceId]);
+  const handleHire = async (serviceId) => {
+    // Verificar si el usuario está conectado
+    if (!connected || !wallet) {
+      toast.error("Necesitas conectar tu cartera primero");
+      return;
+    }
+    
+    try {
+      // Marcar el servicio como "en proceso"
+      setProcessingServices(prev => [...prev, serviceId]);
+      
+      // Encontrar el servicio seleccionado
+      const selectedService = services.find(s => s.id === serviceId);
+      
+      if (!selectedService) {
+        throw new Error("Servicio no encontrado");
+      }
+      
+      // Obtener datos del servicio
+      const description = selectedService.title;
+      const amount = selectedService.priceInUsdc;
+      // Calcular el deadline basado en días de entrega (convertir a timestamp)
+      const deadlineInDays = selectedService.deliveryDays;
+      
+      console.log(`Iniciando contrato para: ${description}`);
+      console.log(`Monto: ${amount} USDC`);
+      console.log(`Plazo de entrega: ${deadlineInDays} días`);
+      
+      // Crear el acuerdo en el contrato inteligente
+      const result = await createAgreement(
+        wallet.publicKey, // Buyer: cartera del usuario actual
+        SELLER_IDENTITY, // Seller: identidad fija proporcionada
+        amount,          // Amount: precio en USDC
+        description,     // Description: título del servicio
+        deadlineInDays   // Deadline: días para entrega
+      );
+      
+      // Si se procesa correctamente
+      if (result) {
+        console.log("Contrato creado con éxito:", result);
+        
+        // Guardar información del acuerdo
+        setSuccessfulAgreements(prev => ({
+          ...prev,
+          [serviceId]: {
+            agreementId: result.txResult?.id || "unknown",
+            targetTick: result.targetTick
+          }
+        }));
+        
+        toast.success("¡Servicio contratado con éxito!");
+      }
+      
+    } catch (err) {
+      console.error("Error al contratar servicio:", err);
+      toast.error(err.message || "Error al contratar el servicio");
+      
+      // Quitar el servicio de "procesando" en caso de error
+      setProcessingServices(prev => prev.filter(id => id !== serviceId));
+    }
   };
 
   const filteredServices = services
